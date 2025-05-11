@@ -9,45 +9,45 @@ DELETE
 DELETE
   FROM ACTIVITY;
 CREATE
-SEQUENCE IF NOT EXISTS ACTIVITY_ID_SEQ;
+    SEQUENCE IF NOT EXISTS ACTIVITY_ID_SEQ;
 ALTER
-SEQUENCE ACTIVITY_ID_SEQ RESTART WITH 1;
+    SEQUENCE ACTIVITY_ID_SEQ RESTART WITH 1;
 
 CREATE
-SEQUENCE IF NOT EXISTS TASK_ID_SEQ;
+    SEQUENCE IF NOT EXISTS TASK_ID_SEQ;
 CREATE
-SEQUENCE IF NOT EXISTS SPRINT_ID_SEQ;
+    SEQUENCE IF NOT EXISTS SPRINT_ID_SEQ;
 CREATE
-SEQUENCE IF NOT EXISTS PROJECT_ID_SEQ;
+    SEQUENCE IF NOT EXISTS PROJECT_ID_SEQ;
 CREATE
-SEQUENCE IF NOT EXISTS USERS_ID_SEQ;
+    SEQUENCE IF NOT EXISTS USERS_ID_SEQ;
 
 DELETE
   FROM TASK;
 ALTER
-SEQUENCE TASK_ID_SEQ RESTART WITH 1;
+    SEQUENCE TASK_ID_SEQ RESTART WITH 1;
 
 DELETE
   FROM SPRINT;
 ALTER
-SEQUENCE SPRINT_ID_SEQ RESTART WITH 1;
+    SEQUENCE SPRINT_ID_SEQ RESTART WITH 1;
 
 DELETE
   FROM PROJECT;
 ALTER
-SEQUENCE PROJECT_ID_SEQ RESTART WITH 1;
+    SEQUENCE PROJECT_ID_SEQ RESTART WITH 1;
 
 DELETE
   FROM USERS;
 ALTER
-SEQUENCE USERS_ID_SEQ RESTART WITH 1;
+    SEQUENCE USERS_ID_SEQ RESTART WITH 1;
 
 
-INSERT INTO USERS (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME)
-VALUES ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'userDisplayName'),
-       ('admin@gmail.com', '{noop}admin', 'adminFirstName', 'adminLastName', 'adminDisplayName'),
-       ('guest@gmail.com', '{noop}guest', 'guestFirstName', 'guestLastName', 'guestDisplayName'),
-       ('manager@gmail.com', '{noop}manager', 'managerFirstName', 'managerLastName', 'managerDisplayName');
+INSERT INTO USERS (EMAIL, PASSWORD, FIRST_NAME, LAST_NAME, DISPLAY_NAME, startpoint)
+VALUES ('user@gmail.com', '{noop}password', 'userFirstName', 'userLastName', 'userDisplayName','2025-05-10 22:52:04.836350'),
+       ('admin@gmail.com', '{noop}admin', 'adminFirstName', 'adminLastName', 'adminDisplayName','2025-05-10 22:52:04.836350'),
+       ('guest@gmail.com', '{noop}guest', 'guestFirstName', 'guestLastName', 'guestDisplayName','2025-05-10 22:52:04.836350'),
+       ('manager@gmail.com', '{noop}manager', 'managerFirstName', 'managerLastName', 'managerDisplayName','2025-05-10 22:52:04.836350');
 
 -- 0 DEV
 -- 1 ADMIN
@@ -72,9 +72,9 @@ VALUES (1, 'skype', 'userSkype'),
        (2, 'vk', 'adminVk');
 
 
-INSERT INTO PROJECT (code, title, description, type_code, parent_id)
-VALUES ('PR1', 'PROJECT-1', 'test project 1', 'task_tracker', NULL),
-       ('PR2', 'PROJECT-2', 'test project 2', 'task_tracker', 1);
+INSERT INTO PROJECT (code, title, description, type_code, parent_id,startpoint)
+VALUES ('PR1', 'PROJECT-1', 'test project 1', 'task_tracker', NULL,'2025-05-10 22:52:04.836350'),
+       ('PR2', 'PROJECT-2', 'test project 2', 'task_tracker', 1,'2025-05-10 22:52:04.836350');
 
 INSERT INTO SPRINT (status_code, startpoint, endpoint, code, project_id)
 VALUES ('finished', '2023-05-01 08:05:10', '2023-05-07 17:10:01', 'SP-1.001', 1),

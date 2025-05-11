@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import static com.javarush.jira.ref.ReferenceService.getRefs;
+
 @Slf4j
 @Controller
 @RequestMapping(DashboardUIController.DASHBOARD_URL)
@@ -24,7 +26,7 @@ public class DashboardUIController {
     public String showDashboard(Model model) {
         log.info("show dashboard");
         model.addAttribute("projects", handler.getAllTos(TimestampRepository.NEWEST_FIRST));
-        model.addAttribute("taskStatusRefs", ReferenceService.getRefs(RefType.TASK_STATUS));
+        model.addAttribute("taskStatusRefs", getRefs(RefType.TASK_STATUS));
         return "dashboard";
     }
 }

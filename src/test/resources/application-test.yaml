@@ -1,9 +1,12 @@
-spring.cache.type: none
 spring:
+  cache:
+    type: none
   logging:
     level:
       org.springframework: DEBUG
       com.zaxxer.hikari: DEBUG
+      org.hibernate.SQL: DEBUG
+      org.springframework.test: DEBUG
   sql:
     init:
       mode: never
@@ -16,7 +19,7 @@ spring:
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     database-platform: org.hibernate.dialect.H2Dialect
   liquibase:
     enabled: false

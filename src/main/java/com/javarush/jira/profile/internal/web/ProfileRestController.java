@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProfileRestController extends AbstractProfileController {
     public static final String REST_URL = "/api/profile";
 
+
     @GetMapping
     public ProfileTo get(@AuthenticationPrincipal AuthUser authUser) {
         return super.get(authUser.id());
