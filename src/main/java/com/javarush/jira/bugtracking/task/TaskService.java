@@ -9,6 +9,7 @@ import com.javarush.jira.bugtracking.task.mapper.TaskExtMapper;
 import com.javarush.jira.bugtracking.task.mapper.TaskFullMapper;
 import com.javarush.jira.bugtracking.task.to.TaskToExt;
 import com.javarush.jira.bugtracking.task.to.TaskToFull;
+import com.javarush.jira.common.error.AlreadyExistsException;
 import com.javarush.jira.common.error.DataConflictException;
 import com.javarush.jira.common.error.NotFoundException;
 import com.javarush.jira.common.util.Util;
@@ -21,6 +22,7 @@ import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static com.javarush.jira.bugtracking.ObjectType.TASK;
 import static com.javarush.jira.bugtracking.task.TaskUtil.fillExtraFields;
@@ -139,5 +141,33 @@ public class TaskService {
         if (!userType.equals(possibleUserType)) {
             throw new DataConflictException(String.format(assign ? CANNOT_ASSIGN : CANNOT_UN_ASSIGN, userType, task.getStatusCode()));
         }
+    }
+
+    @Transactional(readOnly = true)
+    public Set<String> getTags(long taskId) {
+        return handler.getRepository().findById(taskId)
+                .map(Task::getTags)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+    }
+
+    @Transactional
+    public Set<String> addTag(long taskId, String tag) {
+        Task task = handler.getRepository().findById(taskId)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+        if (task.getTags().contains(tag)) {
+            throw new AlreadyExistsException("Tag already exists");
+        }
+        task.getTags().add(tag);
+        return handler.getRepository().save(task).getTags();
+    }
+
+    @Transactional
+    public void removeTag(long taskId, String tag) {
+        Task task = handler.getRepository().findById(taskId)
+                .orElseThrow(() -> new NotFoundException("Task not found"));
+        if (!task.getTags().remove(tag)) {
+            throw new NotFoundException("Tag not found");
+        }
+        handler.getRepository().save(task);
     }
 }
