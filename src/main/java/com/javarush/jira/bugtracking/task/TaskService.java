@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -41,6 +42,47 @@ public class TaskService {
     private final SprintRepository sprintRepository;
     private final TaskExtMapper extMapper;
     private final UserBelongRepository userBelongRepository;
+
+    public Duration calculateInProgressTime(Long taskId) {
+        List<Activity> activities = getSortedActivities(taskId);
+        Activity inProgress = findLastActivityByStatus(activities, "in_progress");
+        Activity readyForReview = findLastActivityByStatus(activities, "ready_for_review");
+
+        validateActivitiesExist(inProgress, readyForReview, "in_progress", "ready_for_review");
+        return calculateDurationBetween(inProgress, readyForReview);
+    }
+
+    public Duration calculateInTestingTime(Long taskId) {
+        List<Activity> activities = getSortedActivities(taskId);
+        Activity readyForReview = findLastActivityByStatus(activities, "ready_for_review");
+        Activity done = findLastActivityByStatus(activities, "done");
+
+        validateActivitiesExist(readyForReview, done, "ready_for_review", "done");
+        return calculateDurationBetween(readyForReview, done);
+    }
+
+    private List<Activity> getSortedActivities(Long taskId) {
+        return activityHandler.getRepository().findAllByTaskIdOrderByUpdatedDesc(taskId);
+    }
+
+    private Activity findLastActivityByStatus(List<Activity> activities, String targetStatus) {
+        return activities.stream()
+                .filter(a -> targetStatus.equalsIgnoreCase(a.getStatusCode()))
+                .reduce((first, second) -> second)
+                .orElse(null);
+    }
+
+    private void validateActivitiesExist(Activity first, Activity second, String firstName, String secondName) {
+        if (first == null || second == null) {
+            String missing = first == null ? firstName : secondName;
+            throw new NotFoundException("Required status not found: " + missing);
+        }
+    }
+
+    private Duration calculateDurationBetween(Activity start, Activity end) {
+        return Duration.between(start.getUpdated(), end.getUpdated());
+    }
+
 
     @Transactional
     public void changeStatus(long taskId, String statusCode) {
