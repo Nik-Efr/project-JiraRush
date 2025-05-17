@@ -20,4 +20,7 @@
 6) Сделал рефакторинг через Path и Files, протестировал
 7) Написал TaskTagController c get post delete, дописал в TaskService getTags addTag removeTag,
    также добавил AlreadyExistsException и исправил сущность Task (tags на EAGER)
-8) Добавил два эндпоинта в TaskController и реализовал вычисление времени с обработкой ошибок в TaskService с помощью Duration
+8) Добавил два эндпоинта в TaskController и реализовал вычисление времени с обработкой ошибок в TaskService с помощью
+   Duration
+9) Написал Dockerfile для основного сервера, все переменные окружения задал там же,
+   образ собирается, но контейнер не поднимается, так как нет подключения к бд 
