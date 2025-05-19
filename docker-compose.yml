@@ -25,14 +25,14 @@ services:
       - "8080"
 
   nginx:
-    image: nginx:alpine
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
     container_name: nginx
     depends_on:
       - jira-server
     ports:
       - "80:80"
-    volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
 
 volumes:
   db_data:

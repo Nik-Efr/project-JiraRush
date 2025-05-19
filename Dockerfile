@@ -18,9 +18,10 @@ ENV DB_PASSWORD=JiraRush \
     MAIL_PASSWORD=zdfzsrqvgimldzyj \
     MAIL_PORT=587 \
     MAIL_USERNAME=jira4jr@gmail.com
-WORKDIR /app
-COPY --from=build /app/target/jira-1.0.jar /app/
-COPY ./resources /app/resources
+
+WORKDIR /opt/jirarush
+COPY --from=build /app/target/jira-1.0.jar .
+COPY ./resources ./resources
 
 EXPOSE 8080
 CMD ["java", "-jar", "jira-1.0.jar"]
