@@ -1,13 +1,11 @@
 FROM eclipse-temurin:17-jre-alpine
 
-WORKDIR /opt/app
+FROM maven:3.8.4-amazoncorretto-17 as build
+WORKDIR app/
+COPY . .
+RUN mvn clean package -DskipTests
 
-RUN addgroup --system javauser && adduser -S -s /sbin/nologin -G javauser javauser
-
-ARG JAR_FILE=target/*.jar
-
-COPY ${JAR_FILE} app.jar
-
+FROM openjdk:17-jdk-slim
 ENV DB_PASSWORD=JiraRush \
     DB_USERNAME=jira \
     GITHUB_CLIENT_ID=3d0d8738e65881fff266 \
@@ -20,11 +18,9 @@ ENV DB_PASSWORD=JiraRush \
     MAIL_PASSWORD=zdfzsrqvgimldzyj \
     MAIL_PORT=587 \
     MAIL_USERNAME=jira4jr@gmail.com
-
-RUN chown -R javauser:javauser .
-
-USER javauser
+WORKDIR /app
+COPY --from=build /app/target/jira-1.0.jar /app/
+COPY ./resources /app/resources
 
 EXPOSE 8080
-
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "jira-1.0.jar"]
