@@ -1,30 +1,30 @@
-## [REST API](http://localhost:8080/doc)
+1. Проект: Система управления проектами и задачами, построенная на Spring Boot с использованием архитектуры Spring Modulith.
+   Аналог Jira с современным подходом к модульной архитектуре и REST API.
 
-## Концепция:
+2. Собрать и запустить
+   docker-compose up -d
+   доступно по адресу: http://localhost:80
 
-- Spring Modulith
-    - [Spring Modulith: достигли ли мы зрелости модульности](https://habr.com/ru/post/701984/)
-    - [Introducing Spring Modulith](https://spring.io/blog/2022/10/21/introducing-spring-modulith)
-    - [Spring Modulith - Reference documentation](https://docs.spring.io/spring-modulith/docs/current-SNAPSHOT/reference/html/)
+3. Технические особенности 
+   Использована модульная архитектура Spring Modulith для разделения бизнес-логики 
+   Реализована система управления проектами, спринтами и задачами
 
-```
-  url: jdbc:postgresql://localhost:5432/jira
-  username: jira
-  password: JiraRush
-```
+4. Функциональность
+   Управление проектами и задачами
+   Система ролей пользователей 
+   Спринты и планирование
+   REST API для всех операций CRUD 
+   Модульная архитектура с четким разделением ответственности
 
-- Есть 2 общие таблицы, на которых не fk
-    - _Reference_ - справочник. Связь делаем по _code_ (по id нельзя, тк id привязано к окружению-конкретной базе)
-    - _UserBelong_ - привязка юзеров с типом (owner, lead, ...) к объекту (таска, проект, спринт, ...). FK вручную будем
-      проверять
-
-## Аналоги
-
-- https://java-source.net/open-source/issue-trackers
-
-## Тестирование
-
-- https://habr.com/ru/articles/259055/
-
-Список выполненных задач:
-...
+5. Выполненные таски
+   1) Удалил социальные сети: vk, yandex.
+   2) Вынести чувствительную информацию в отдельный проперти файл
+   3) Переделать тесты так, чтоб во время тестов использовалась in memory БД (H2)
+   4) Написал тесты для всех публичных методов контроллера ProfileRestController
+   5) Сделал рефакторинг com.javarush.jira.bugtracking.attachment.FileUtil#upload через Path и Files, протестировал
+   6) Реализовал добавления тегов к задаче (REST API + реализация на сервисе)
+   7) Добавил подсчет времени сколько задача находилась в работе и тестировании
+   8) Добавил локализацию минимум на двух языках для страницы index.html
+   9) Написал Dockerfile для основного сервера
+   10) Написал docker-compose для трех контейнеров(бд, server, nginx)
+   
